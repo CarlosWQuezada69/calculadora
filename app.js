@@ -205,7 +205,7 @@
             }
         },
 
-        calculate: function() {
+        calculate: async function() {
             try {
                 console.log('🧮 Calculando...');
                 
@@ -235,7 +235,7 @@
                 }
 
                 // Evaluación segura con timeout
-                const result = this.safeEvaluate(expression);
+                const result = await this.safeEvaluate(expression);
 
                 if (result === undefined || result === null) {
                     state.currentInput = 'Error';
@@ -585,7 +585,7 @@
                                 Calculator.appendOperator('%');
                                 break;
                             case 'calculate':
-                                Calculator.calculate();
+                                await Calculator.calculate();
                                 break;
                             case 'mc':
                                 Calculator.memoryMC();

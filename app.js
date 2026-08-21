@@ -599,6 +599,13 @@
                             case 'mminus':
                                 Calculator.memoryMMinus();
                                 break;
+                            default:
+                                if (value) {
+                                    Calculator.appendNumber(value);
+                                } else {
+                                    console.error('Button clicked without action or value:', button);
+                                }
+                                break;
                         }
                     });
                 });

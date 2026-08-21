@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculadora web moderna con historial y persistencia">
+    <meta name="theme-color" content="#667eea">
+    <title>Calculadora Web App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1 class="app-title">🔢 Calculadora</h1>
+            <div class="status-indicator" id="statusIndicator"></div>
+        </header>
+
+        <main class="main-content">
+            <div class="calculator-wrapper">
+                <div class="calculator">
+                    <div class="display-container">
+                        <div class="expression-display" id="expressionDisplay"></div>
+                        <div class="result-display" id="resultDisplay"></div>
+                    </div>
+
+                    <div class="buttons-grid">
+                        <button class="btn clear-btn" data-action="clear">C</button>
+                        <button class="btn delete-btn" data-action="delete">⌫</button>
+                        <button class="btn operator-btn" data-action="percent">%</button>
+                        <button class="btn operator-btn" data-action="divide">÷</button>
+
+                        <button class="btn number-btn" data-value="7">7</button>
+                        <button class="btn number-btn" data-value="8">8</button>
+                        <button class="btn number-btn" data-value="9">9</button>
+                        <button class="btn operator-btn" data-action="multiply">×</button>
+
+                        <button class="btn number-btn" data-value="4">4</button>
+                        <button class="btn number-btn" data-value="5">5</button>
+                        <button class="btn number-btn" data-value="6">6</button>
+                        <button class="btn operator-btn" data-action="subtract">-</button>
+
+                        <button class="btn number-btn" data-value="1">1</button>
+                        <button class="btn number-btn" data-value="2">2</button>
+                        <button class="btn number-btn" data-value="3">3</button>
+                        <button class="btn operator-btn" data-action="add">+</button>
+
+                        <button class="btn number-btn" data-value="0">0</button>
+                        <button class="btn number-btn" data-value=".">.</button>
+                        <button class="btn equals-btn" data-action="calculate">=</button>
+                    </div>
+                </div>
+
+                <section class="history-section">
+                    <div class="history-header">
+                        <h3>📜 Historial</h3>
+                        <button class="clear-history-btn" id="clearHistoryBtn" aria-label="Limpiar historial">
+                            🗑️
+                        </button>
+                    </div>
+                    <div class="history-list" id="historyList"></div>
+                </section>
+
+                <section class="memory-section">
+                    <div class="memory-header">
+                        <span>💾 Memoria</span>
+                        <div class="memory-values">
+                            <span>M: <span id="memoryDisplay">0</span></span>
+                        </div>
+                    </div>
+                    <div class="memory-buttons">
+                        <button class="btn memory-btn" data-action="mc">MC</button>
+                        <button class="btn memory-btn" data-action="mr">MR</button>
+                        <button class="btn memory-btn" data-action="mplus">M+</button>
+                        <button class="btn memory-btn" data-action="mminus">M-</button>
+                    </div>
+                </section>
+
+                <footer class="app-footer">
+                    <p class="app-subtitle">Click o usa el teclado</p>
+                    <div class="keyboard-hint">
+                        [0-9] + / - * Enter ⌫ C ESC
+                    </div>
+                </footer>
+            </div>
+        </main>
+
+        <nav class="app-nav">
+            <button class="nav-btn" id="historyToggle" aria-label="Mostrar/Ocultar historial">
+                📋
+            </button>
+        </nav>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

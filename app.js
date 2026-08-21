@@ -205,7 +205,7 @@
             }
         },
 
-        calculate: async function() {
+        calculate: function() {
             try {
                 console.log('🧮 Calculando...');
                 
@@ -234,18 +234,28 @@
                     return;
                 }
 
-                // Evaluación segura con timeout
-                const result = await this.safeEvaluate(expression);
+                // Evaluación segura con timeout (no async, devuelve Promise que se resuelve)
+                const safeEvalPromise = this.safeEvaluate(expression);
+                
+                return safeEvalPromise.then(function(result) {
+                    if (result === undefined || result === null) {
+                        state.currentInput = 'Error';
+                        Display.update();
+                        Utils.showToast('❌ Error de cálculo');
+                        return;
+                    }
 
-                if (result === undefined || result === null) {
-                    state.currentInput = 'Error';
-                    Display.update();
-                    Utils.showToast('❌ Error de cálculo');
-                    return;
-                }
+                    // Redondear para evitar errores de punto flotante
+                    const roundedResult = parseFloat(result.toFixed(10)).toString();
+                    
+                    // Guardar en historial
+                    Calculator.addToHistory(state.expression, roundedResult);
 
-                // Redondear para evitar errores de punto flotante
-                const roundedResult = parseFloat(result.toFixed(10)).toString();
+                    // Actualizar display
+                    state.currentInput = roundedResult;
+                    
+                    Utils.showToast('✅ Resultado calculado');
+                });
 
                 // Guardar en historial
                 this.addToHistory(state.expression, roundedResult);
@@ -585,7 +595,7 @@
                                 Calculator.appendOperator('%');
                                 break;
                             case 'calculate':
-                                await Calculator.calculate();
+                                Calculator.calculate();
                                 break;
                             case 'mc':
                                 Calculator.memoryMC();

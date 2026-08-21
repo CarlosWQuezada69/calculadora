@@ -348,6 +348,10 @@ body {
     animation: pulse 2s ease-in-out infinite;
 }
 
+.hidden {
+    display: none !important;
+}
+
 /* Responsive */
 @media (max-width: 480px) {
     html {

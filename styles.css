@@ -115,6 +115,9 @@ body {
     text-shadow: 0 2px 8px rgba(78, 205, 196, 0.3);
     word-wrap: break-word;
     max-width: 100%;
+    opacity: 1 !important;
+    visibility: visible;
+    line-height: 1.1;
 }
 
 .buttons-grid {

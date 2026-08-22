@@ -1,98 +1,398 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Calculadora web moderna con historial y persistencia">
-    <meta name="theme-color" content="#667eea">
-    <title>Calculadora Web App</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --card: #1a1d27;
+      --display: #12141c;
+      --text: #f5f6fa;
+      --text-dim: #8a8fa3;
+      --btn: #262a38;
+      --btn-hover: #323748;
+      --accent: #4f7cff;
+      --accent-hover: #6589ff;
+      --op: #2e3550;
+      --op-hover: #3a4370;
+      --danger: #3a2430;
+      --danger-hover: #4d2f40;
+      --radius: 14px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at 30% 20%, #1c2030 0%, var(--bg) 60%);
+      color: var(--text);
+      padding: 16px;
+    }
+
+    .calculator {
+      width: 100%;
+      max-width: 360px;
+      background: var(--card);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .display {
+      background: var(--display);
+      border-radius: var(--radius);
+      padding: 18px 16px;
+      margin-bottom: 16px;
+      text-align: right;
+      overflow: hidden;
+    }
+
+    .display .expression {
+      min-height: 1.2em;
+      font-size: 0.95rem;
+      color: var(--text-dim);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .display .value {
+      font-size: 2.6rem;
+      font-weight: 600;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .display .value.error {
+      color: #ff6b6b;
+      font-size: 1.6rem;
+    }
+
+    .keys {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .keys button {
+      aspect-ratio: 1;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: var(--text);
+      background: var(--btn);
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.05s ease;
+      user-select: none;
+    }
+
+    .keys button:hover { background: var(--btn-hover); }
+    .keys button:active { transform: scale(0.95); }
+
+    .keys button.op {
+      background: var(--op);
+      color: #9db4ff;
+    }
+    .keys button.op:hover { background: var(--op-hover); }
+
+    .keys button.op.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .keys button.danger {
+      background: var(--danger);
+      color: #ff9b9b;
+    }
+    .keys button.danger:hover { background: var(--danger-hover); }
+
+    .keys button.equals {
+      background: var(--accent);
+      color: #fff;
+    }
+    .keys button.equals:hover { background: var(--accent-hover); }
+
+    .keys button.span-2 {
+      grid-column: span 2;
+      aspect-ratio: auto;
+    }
+
+    .hint {
+      margin-top: 14px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+
+    @media (max-width: 380px) {
+      .display .value { font-size: 2rem; }
+      .keys button { font-size: 1.1rem; }
+    }
+  </style>
 </head>
 <body>
-    <div class="app-container">
-        <header class="app-header">
-            <h1 class="app-title">🔢 Calculadora</h1>
-            <div class="status-indicator" id="statusIndicator"></div>
-        </header>
-
-        <main class="main-content">
-            <div class="calculator-wrapper">
-                <div class="calculator">
-                    <div class="display-container">
-                        <div class="expression-display" id="expressionDisplay"></div>
-                        <div class="result-display" id="resultDisplay"></div>
-                    </div>
-
-                    <div class="buttons-grid">
-                        <button class="btn clear-btn" data-action="clear">C</button>
-                        <button class="btn delete-btn" data-action="delete">⌫</button>
-                        <button class="btn operator-btn" data-action="percent">%</button>
-                        <button class="btn operator-btn" data-action="divide">÷</button>
-
-                        <button class="btn number-btn" data-value="7">7</button>
-                        <button class="btn number-btn" data-value="8">8</button>
-                        <button class="btn number-btn" data-value="9">9</button>
-                        <button class="btn operator-btn" data-action="multiply">×</button>
-
-                        <button class="btn number-btn" data-value="4">4</button>
-                        <button class="btn number-btn" data-value="5">5</button>
-                        <button class="btn number-btn" data-value="6">6</button>
-                        <button class="btn operator-btn" data-action="subtract">-</button>
-
-                        <button class="btn number-btn" data-value="1">1</button>
-                        <button class="btn number-btn" data-value="2">2</button>
-                        <button class="btn number-btn" data-value="3">3</button>
-                        <button class="btn operator-btn" data-action="add">+</button>
-
-                        <button class="btn number-btn" data-value="0">0</button>
-                        <button class="btn number-btn" data-value=".">.</button>
-                        <button class="btn equals-btn" data-action="calculate">=</button>
-                    </div>
-                </div>
-
-                <section class="history-section">
-                    <div class="history-header">
-                        <h3>📜 Historial</h3>
-                        <button class="clear-history-btn" id="clearHistoryBtn" aria-label="Limpiar historial">
-                            🗑️
-                        </button>
-                    </div>
-                    <div class="history-list" id="historyList"></div>
-                </section>
-
-                <section class="memory-section">
-                    <div class="memory-header">
-                        <span>💾 Memoria</span>
-                        <div class="memory-values">
-                            <span>M: <span id="memoryDisplay">0</span></span>
-                        </div>
-                    </div>
-                    <div class="memory-buttons">
-                        <button class="btn memory-btn" data-action="mc">MC</button>
-                        <button class="btn memory-btn" data-action="mr">MR</button>
-                        <button class="btn memory-btn" data-action="mplus">M+</button>
-                        <button class="btn memory-btn" data-action="mminus">M-</button>
-                    </div>
-                </section>
-
-                <footer class="app-footer">
-                    <p class="app-subtitle">Click o usa el teclado</p>
-                    <div class="keyboard-hint">
-                        [0-9] + / - * Enter ⌫ C ESC
-                    </div>
-                </footer>
-            </div>
-        </main>
-
-        <nav class="app-nav">
-            <button class="nav-btn" id="historyToggle" aria-label="Mostrar/Ocultar historial">
-                📋
-            </button>
-        </nav>
+  <main class="calculator" aria-label="Calculadora">
+    <div class="display">
+      <div class="expression" id="expression">&nbsp;</div>
+      <div class="value" id="value" aria-live="polite">0</div>
     </div>
 
-    <script src="app.js"></script>
-</body>
-</html>
+    <div class="keys" id="keys">
+      <button class="danger" data-action="clear" aria-label="Borrar todo">C</button>
+      <button class="danger" data-action="backspace" aria-label="Borrar último dígito">⌫</button>
+      <button class="op" data-action="percent" aria-label="Porcentaje">%</button>
+      <button class="op" data-operator="/" aria-label="Dividir">÷</button>
+
+      <button data-digit="7">7</button>
+      <button data-digit="8">8</button>
+      <button data-digit="9">9</button>
+      <button class="op" data-operator="*" aria-label="Multiplicar">×</button>
+
+      <button data-digit="4">4</button>
+      <button data-digit="5">5</button>
+      <button data-digit="6">6</button>
+      <button class="op" data-operator="-" aria-label="Restar">−</button>
+
+      <button data-digit="1">1</button>
+      <button data-digit="2">2</button>
+      <button data-digit="3">3</button>
+      <button class="op" data-operator="+" aria-label="Sumar">+</button>
+
+      <button data-action="negate" aria-label="Cambiar signo">±</button>
+      <button data-digit="0">0</button>
+      <button data-action="decimal" aria-label="Punto decimal">.</button>
+      <button class="equals" data-action="equals" aria-label="Igual">=</button>
+    </div>
+
+    <p class="hint">Atajos: dígitos, + − * /, Enter (=), Esc (C), Retroceso (⌫), %</p>
+  </main>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const OP_SYMBOL = { "+": "+", "-": "−", "*": "×", "/": "÷" };
+      const MAX_DIGITS = 15;
+
+      const expressionEl = document.getElementById("expression");
+      const valueEl = document.getElementById("value");
+      const keysEl = document.getElementById("keys");
+
+      const state = {
+        current: "0",
+        previous: null,
+        operator: null,
+        overwrite: true,
+        error: false,
+      };
+
+      function formatNumber(n) {
+        if (!Number.isFinite(n)) return "Error";
+        if (Math.abs(n) >= 1e16 || (Math.abs(n) < 1e-9 && n !== 0)) {
+          return n.toExponential(6).replace(/\.?0+e/, "e");
+        }
+        const rounded = parseFloat(n.toPrecision(12));
+        return String(rounded);
+      }
+
+      function countDigits(value) {
+        return value.replace(/[-.]/g, "").length;
+      }
+
+      function setError(message) {
+        state.error = true;
+        state.current = "0";
+        state.previous = null;
+        state.operator = null;
+        state.overwrite = true;
+        expressionEl.innerHTML = "&nbsp;";
+        valueEl.textContent = message;
+        valueEl.classList.add("error");
+      }
+
+      function updateDisplay() {
+        if (state.error) return;
+
+        valueEl.classList.remove("error");
+        valueEl.textContent = state.current;
+
+        let expr = "";
+        if (state.previous !== null && state.operator) {
+          expr = `${formatNumber(state.previous)} ${OP_SYMBOL[state.operator]}`;
+          if (state.overwrite) expr += " ?";
+        }
+        expressionEl.textContent = expr || "\u00a0";
+
+        keysEl.querySelectorAll("button[data-operator]").forEach((btn) => {
+          btn.classList.toggle("active", state.operator === btn.dataset.operator && state.overwrite);
+        });
+      }
+
+      function compute(a, b, op) {
+        switch (op) {
+          case "+": return a + b;
+          case "-": return a - b;
+          case "*": return a * b;
+          case "/":
+            if (b === 0) {
+              setError("No se puede dividir entre 0");
+              return null;
+            }
+            return a / b;
+          default:
+            return b;
+        }
+      }
+
+      function inputDigit(digit) {
+        if (state.error) clearAll();
+
+        if (state.overwrite) {
+          state.current = digit === "." ? "0." : digit;
+          state.overwrite = false;
+          if (state.error === false && digit !== ".") valueEl.classList.remove("error");
+        } else {
+          if (digit === "." && state.current.includes(".")) return;
+          if (countDigits(state.current) >= MAX_DIGITS) return;
+          state.current = state.current === "0" && digit !== "." ? digit : state.current + digit;
+        }
+        updateDisplay();
+      }
+
+      function inputDecimal() {
+        inputDigit(".");
+      }
+
+      function setOperator(op) {
+        if (state.error) {
+          if (state.operator === null) return;
+          clearAll();
+        }
+
+        if (state.operator && !state.overwrite && state.previous !== null) {
+          const result = compute(state.previous, parseFloat(state.current), state.operator);
+          if (result === null) return;
+          state.previous = result;
+          state.current = formatNumber(result);
+        } else {
+          state.previous = parseFloat(state.current);
+        }
+
+        state.operator = op;
+        state.overwrite = true;
+        updateDisplay();
+      }
+
+      function evaluate() {
+        if (state.error || state.operator === null || state.previous === null) return;
+
+        const result = compute(state.previous, parseFloat(state.current), state.operator);
+        if (result === null) return;
+
+        expressionEl.textContent = `${formatNumber(state.previous)} ${OP_SYMBOL[state.operator]} ${formatNumber(parseFloat(state.current))} =`;
+        state.current = formatNumber(result);
+        state.previous = null;
+        state.operator = null;
+        state.overwrite = true;
+        valueEl.textContent = state.current;
+      }
+
+      function clearAll() {
+        state.current = "0";
+        state.previous = null;
+        state.operator = null;
+        state.overwrite = true;
+        state.error = false;
+        valueEl.classList.remove("error");
+        updateDisplay();
+      }
+
+      function backspace() {
+        if (state.error) {
+          clearAll();
+          return;
+        }
+        if (state.overwrite) return;
+        state.current = state.current.length > 1 ? state.current.slice(0, -1) : "0";
+        if (state.current === "-") state.current = "0";
+        updateDisplay();
+      }
+
+      function toggleSign() {
+        if (state.error) return;
+        if (state.current === "0") return;
+        state.current = state.current.startsWith("-")
+          ? state.current.slice(1)
+          : "-" + state.current;
+        state.overwrite = false;
+        updateDisplay();
+      }
+
+      function percent() {
+        if (state.error) return;
+        const base = state.previous !== null && state.operator ? state.previous : 1;
+        const result = parseFloat(state.current) * base / 100;
+        state.current = formatNumber(result);
+        state.overwrite = true;
+        updateDisplay();
+      }
+
+      const ACTIONS = {
+        clear: clearAll,
+        backspace,
+        decimal: inputDecimal,
+        negate: toggleSign,
+        percent,
+        equals: evaluate,
+      };
+
+      function handleKey(key) {
+        if (key.digit !== undefined) inputDigit(key.digit);
+        else if (key.operator !== undefined) setOperator(key.operator);
+        else if (ACTIONS[key.action]) ACTIONS[key.action]();
+      }
+
+      keysEl.addEventListener("click", (event) => {
+        const button = event.target.closest("button");
+        if (!button) return;
+        handleKey(button.dataset);
+      });
+
+      const KEY_MAP = {
+        "0": { digit: "0" }, "1": { digit: "1" }, "2": { digit: "2" },
+        "3": { digit: "3" }, "4": { digit: "4" }, "5": { digit: "5" },
+        "6": { digit: "6" }, "7": { digit: "7" }, "8": { digit: "8" },
+        "9": { digit: "9" },
+        ".": { action: "decimal" }, ",": { action: "decimal" },
+        "+": { operator: "+" }, "-": { operator: "-" },
+        "*": { operator: "*" }, "/": { operator: "/" },
+        "Enter": { action: "equals" }, "=": { action: "equals" },
+        "Escape": { action: "clear" }, "Backspace": { action: "backspace" },
+        "%": { action: "percent" },
+      };
+
+      document.addEventListener("keydown", (event) => {
+        if (event.ctrlKey || event.metaKey || event.altKey) return;
+        const key = KEY_MAP[event.key];
+        if (!key) return;
+        event.preventDefault();
+        handleKey(key);
+      });
+
+      updateDisplay();
+    })();
+  </script>
 </body>
 </html>

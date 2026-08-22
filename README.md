@@ -1,97 +1,50 @@
-# 🔢 Calculadora Web App
+# Calculadora Web
 
-Una calculadora moderna, funcional y persistente construida con HTML, CSS y JavaScript puro (Vanilla JS).
+Calculadora web moderna en un **único archivo HTML autocontenido**.
 
-## ✨ Características
+## Características
 
-- **Operaciones básicas**: Suma, resta, multiplicación, división, porcentaje
-- **Funciones avanzadas**: 
-  - Historial de operaciones
-  - Memoria (MC, MR, M+, M-)
-  - Borrado parcial y completo
-- **Persistencia**: Guarda historial y memoria en localStorage
-- **Soporte de teclado**: Usa [0-9], +, -, *, /, Enter, Backspace, C, Esc
-- **Diseño responsive**: Funciona perfecto en móviles y escritorio
-- **SPA (Single Page Application)**: Sin recargas de página
+- ✅ **Un solo archivo**: Todo el código (HTML + CSS + JS) está en `index.html`
+- ✅ **Sin dependencias**: Funciona sin librerías externas ni servidores
+- ✅ **Operaciones básicas**: Suma, resta, multiplicación, división
+- ✅ **Funciones adicionales**: Decimales, porcentaje, cambio de signo
+- ✅ **Historial visual**: Muestra la expresión completa en pantalla
+- ✅ **Diseño responsive**: Adaptable a móviles y escritorio
+- ✅ **Compatible con teclado**: Funciona con el teclado físico
 
-## 📁 Estructura del Proyecto
+## Cómo usar
+
+1. Descarga este repositorio o abre `index.html` directamente
+2. Haz doble clic en el archivo para abrirlo en tu navegador
+3. ¡Listo! Usa el ratón o presiona teclas en el teclado
+
+## Controles
+
+### Botones
+- **0-9**: Números
+- **+ - * /**: Operaciones matemáticas
+- **.**: Punto decimal
+- **C**: Borrar todo
+- **⌫**: Borrar último dígito
+- **=**: Calcular resultado
+- **±**: Cambiar signo del número
+
+### Teclado
+- Los números y operadores funcionan igual que los botones
+- `Enter` = Igual (`=`)
+- `Esc` = Borrar todo (`C`)
+- `Backspace` = Borrar último dígito (`⌫`)
+- `%` = Porcentaje
+
+## Estructura del proyecto
 
 ```
 calculadora/
-├── index.html      # Estructura HTML + referencias a CSS/JS
-├── styles.css      # Estilos modernos con CSS Grid y variables
-├── app.js          # Lógica completa de la calculadora (Vanilla JS)
-└── README.md       # Documentación
+└── index.html  ← TODO EN UN SOLO ARCHIVO
 ```
 
-## 🚀 Cómo Usar
-
-### Opción 1: Abrir directamente en el navegador
-
-```bash
-# Abre el archivo index.html en tu navegador
-index.html
-```
-
-### Opción 2: Servidor local (recomendado)
-
-```bash
-# Usa Python
-python -m http.server 8000
-
-# O usa Node.js
-npx serve .
-# o
-npm install -g serve && serve
-```
-
-## ⌨️ Teclado
-
-| Tecla | Acción |
-|-------|--------|
-| **0-9** | Agrega número |
-| **.** | Punto decimal |
-| **+ / - / * / /** | Operadores |
-| **%** | Porcentaje |
-| **Enter** = | Calcular resultado |
-| **Backspace** | Borrar último dígito |
-| **C** | Limpiar todo |
-| **Esc** | Igual a C |
-
-## 💾 Funciones de Memoria
-
-- **MC**: Borra memoria
-- **MR**: Muestra valor de memoria
-- **M+**: Suma al valor actual a la memoria
-- **M-**: Resta del valor actual a la memoria
-
-## 🎨 Tecnologías
-
-- HTML5 Semántico
-- CSS3 (Grid, Flexbox, Variables CSS, Animaciones)
-- JavaScript ES6+ (IIFE, Arrow functions, Template literals)
-- localStorage para persistencia
-
-## 📱 Responsive
-
-La calculadora se adapta automáticamente:
-- **Escritorio**: Diseño completo con panel lateral
-- **Móvil (<480px)**: Diseño optimizado, botones más grandes
-- **Tablets**: Tamaño intermedio ideal
-
-## 🎯 Mejores Prácticas Implementadas
-
-✅ **Separación de responsabilidades** (HTML/CSS/JS separados)  
-✅ **SPA autocontenido** (Todo en un solo archivo por página)  
-✅ **Código limpio** (ES6+, IIFE para evitar polución global)  
-✅ **Validación de expresiones** (Prevención de errores comunes)  
-✅ **Manejo de estados** (Estado centralizado y predecible)  
-✅ **Accesibilidad** (ARIA labels, semántica HTML)  
-
-## 📝 Licencia
-
-MIT License - Puedes usar esto para proyectos personales o comerciales.
+No hay archivos CSS, JS ni carpetas separadas - todo está incrustado en `index.html`.
 
 ---
 
-**Hecho con ❤️ usando Vanilla JavaScript**
+Hecho con 🖥️ para cálculos simples y rápidos.
